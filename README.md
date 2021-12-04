@@ -18,6 +18,8 @@ From within the directory where the two php files (`send.php` and `get.php`) are
 
 Just call `http://ip.of.your.pi/send.php?phone=07921XXXXXX&text=Testmessage` from curl or a browser and it will return a JSON object indicating if it failed (status:error), or succeeded (status:ok)
 
+The variables `phone` and `text` are mandator and can be sent via GET or POST (both POST variable or JSON body supported)
+
 ```json
 {
   "status": "ok",
