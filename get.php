@@ -1,5 +1,12 @@
 <?php
-define('DATADIR','data');
+// you might wanna change your timezone
+// to one of the listed
+// https://www.php.net/manual/en/timezones.php
+date_default_timezone_set('Europe/Vienna');
+
+// data directory for the gammu inbox
+// should be set to the same as in your gammu config file
+define('DATADIR','/var/spool/gammu/inbox');
 
 $files = array_values(array_diff(scandir(DATADIR), array('..', '.')));
 asort($files);
@@ -9,6 +16,9 @@ $data = [];
 foreach($files as $index => $file)
 {
     $p = explode('_',trim($file));
+
+    //since MMS will have the .bin file extension, let's skip them
+    if(!endsWith($file,'txt')) continue;
 
     //unique id
     $id = hash('md5',$file);
@@ -26,6 +36,9 @@ foreach($files as $index => $file)
     $message = file_get_contents(DATADIR.'/'.$file);
     $sender = $p[3];
     $part = intval($p[4]);
+
+    // we only care if it's the first part of a message.
+    // the other parts will be handled separately
     if($part==0)
     {
         $otherparts = findParts($files,$sender,$index);
@@ -34,14 +47,15 @@ foreach($files as $index => $file)
     }
     else continue;
 
-    //echo "[i] $sender sent: $message\n";
+    //just cutting off any white spaces
+    $message = trim($message);
 
+    //what we're going to return in the API
     $data[] = [
         'id'=>$id,
         'timestamp' => strtotime("$day-$month-$year $hour:$min:$sec"),
         'year'=>$year,'month'=>$month,'day'=>$day,
         'time'=>"$hour:$min",
-        'test'=>date("d.m.Y H:i:s",strtotime("$day-$month-$year $hour:$min:$sec")),
         'sender'=>$sender,
         'message'=>$message
     ];
@@ -50,7 +64,9 @@ foreach($files as $index => $file)
 
 echo json_encode($data);
 
-//var_dump($files);
+
+
+//some functions that will make our lives easier
 
 function findParts($files,$targetsender,$greaterthanindex)
 {

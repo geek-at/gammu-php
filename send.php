@@ -1,6 +1,6 @@
 <?php
 $log = date('Y-m-d H:i:s') . PHP_EOL;
-$file = 'sms.log';
+$file = 'data/sms.log';
 
 if (php_sapi_name() == "cli") {
     if (!$argv[1] || !$argv[2]) exit("[ERR] Usage: php send.php <phone number> \"<text>\"\n");
