@@ -31,4 +31,7 @@ file_put_contents($file, $log, FILE_APPEND | LOCK_EX);
 echo $log;
 $cont=  ob_get_contents();
 ob_end_clean();
+
+header('Content-Type: application/json; charset=utf-8');
+
 exit(json_encode(['status' => 'ok', 'log' => $log]));
