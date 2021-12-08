@@ -15,7 +15,7 @@ if (php_sapi_name() == "cli") {
         $inputJSON = file_get_contents('php://input');
         $input = json_decode($inputJSON, TRUE); //convert JSON into array
         $text = $input['text'];
-        $rec = $input['phone'];
+        $rec = filter_var($input['phone'], FILTER_SANITIZE_NUMBER_INT);
     }
 
     if (!$text || !$rec)
@@ -24,7 +24,7 @@ if (php_sapi_name() == "cli") {
 
 
 ob_start();
-$cmd = sprintf('gammu-smsd-inject TEXT %s -unicode -text %s', $rec, escapeshellarg($text));
+$cmd = sprintf('gammu-smsd-inject TEXT %s -unicode -len '.(strlen($text)+1).' -text %s', $rec, escapeshellarg($text));
 $log .= $cmd . PHP_EOL;
 $log .= shell_exec($cmd) . PHP_EOL . PHP_EOL;
 file_put_contents($file, $log, FILE_APPEND | LOCK_EX);
