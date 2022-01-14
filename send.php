@@ -8,7 +8,7 @@ if (php_sapi_name() == "cli") {
     $rec = filter_var($argv[1], FILTER_SANITIZE_NUMBER_INT);
 } else {
     $text = trim($_REQUEST['text']);
-    $rec = filter_var($input['phone'], FILTER_SANITIZE_NUMBER_INT);
+    $rec = filter_var($_REQUEST['phone'], FILTER_SANITIZE_NUMBER_INT);
 
     if(!$text && !$rec)
     {
