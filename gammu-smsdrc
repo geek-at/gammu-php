@@ -1,0 +1,14 @@
+[gammu]
+device = /dev/ttyUSB0
+name = Phone
+connection = at
+logfile = /var/log/gammu/gammu.log
+
+[smsd]
+service = files
+logfile = /var/log/gammu/smsd.log
+inboxpath = /var/spool/gammu/inbox/
+outboxpath = /var/spool/gammu/outbox/
+sentsmspath = /var/spool/gammu/sent/
+errorsmspath = /var/spool/gammu/error/
+transmissionfrequency = 30

@@ -1,0 +1,18 @@
+services:
+  gammu-php:
+    build: .
+    container_name: gammu-php
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    volumes:
+      - gammu-inbox:/var/spool/gammu/inbox
+      - gammu-outbox:/var/spool/gammu/outbox
+      - gammu-logs:/var/log/gammu
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  gammu-inbox:
+  gammu-outbox:
+  gammu-logs:
