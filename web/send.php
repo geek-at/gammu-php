@@ -24,7 +24,7 @@ if (php_sapi_name() == "cli") {
 
 
 ob_start();
-$cmd = sprintf('gammu-smsd-inject TEXT %s -unicode -len '.(strlen($text)+1).' -text %s', $rec, escapeshellarg($text));
+$cmd = sprintf('gammu-smsd-inject TEXT %s -unicode -len '.(mb_strlen($text, 'UTF-8')+1).' -text %s', $rec, escapeshellarg($text));
 $log .= $cmd . PHP_EOL;
 $log .= shell_exec($cmd) . PHP_EOL . PHP_EOL;
 file_put_contents($file, $log, FILE_APPEND | LOCK_EX);
